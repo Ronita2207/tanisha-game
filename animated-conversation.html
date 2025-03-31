@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ronita & Tanisha - The Birthday Dress</title>
+    <style>
+        :root {
+            --primary-color: #ff9eaf;
+            --secondary-color: #ffd166;
+            --accent-color: #06d6a0;
+            --text-color: #333333;
+            --button-color: #ef476f;
+            --button-hover: #e43f6f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial Rounded MT Bold', 'Arial', sans-serif;
+            background-color: #f8edeb;
+            color: var(--text-color);
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .game-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* House background */
+        .house-interior {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #f8f9fa, #e9ecef);
+            z-index: 2;
+        }
+
+        .wall {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            background-color: #fff5f5;
+            background-image: linear-gradient(#e8f4f8 1px, transparent 1px), 
+                              linear-gradient(90deg, #e8f4f8 1px, transparent 1px);
+            background-size: 30px 30px;
+            border-bottom: 10px solid #d8e2dc;
+            z-index: 2;
+        }
+
+        .floor {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background-color: #f0e6d2;
+            background-image: repeating-linear-gradient(0deg, transparent, transparent 40px, #e0d6c2 40px, #e0d6c2 80px),
+                              repeating-linear-gradient(90deg, transparent, transparent 40px, #e0d6c2 40px, #e0d6c2 80px);
+            z-index: 2;
+        }
+
+        .furniture {
+            position: absolute;
+            z-index: 3;
+        }
+
+        .sofa {
+            width: 300px;
+            height: 120px;
+            background-color: #b8c0ff;
+            border-radius: 20px 20px 0 0;
+            bottom: 25%;
+            right: 10%;
+            border: 5px solid #9ba6ff;
+            box-shadow: 0 10px 0 #9ba6ff;
+        }
+
+        .sofa::before {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 40px;
+            background-color: #b8c0ff;
+            border: 5px solid #9ba6ff;
+            border-radius: 10px;
+            bottom: -20px;
+            left: 10%;
+        }
+
+        .table {
+            width: 150px;
+            height: 80px;
+            background-color: #ffbe0b;
+            border-radius: 10px;
+            bottom: 25%;
+            left: 20%;
+            border: 3px solid #fb8500;
+            box-shadow: 0 15px 0 rgba(0,0,0,0.1);
+        }
+
+        .table::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 20px;
+            background-color: #fb8500;
+            border-radius: 10px;
+            bottom: -15px;
+            left: 25px;
+        }
+
+        .plant {
+            width: 80px;
+            height: 150px;
+            bottom: 30%;
+            left: 5%;
+        }
+
+        .plant-pot {
+            position: absolute;
+            width: 60px;
+            height: 70px;
+            background-color: #ff6b6b;
+            border-radius: 0 0 30px 30px;
+            bottom: 0;
+            left: 10px;
+        }
+
+        .plant-leaves {
+            position: absolute;
+            width: 80px;
+            height: 100px;
+            bottom: 60px;
+            left: 0;
+        }
+
+        .leaf {
+            position: absolute;
+            width: 40px;
+            height: 60px;
+            background-color: #2ec4b6;
+            border-radius: 50% 20px 50% 20px;
+            transform: rotate(45deg);
+        }
+
+        .leaf:nth-child(2) {
+            left: 20px;
+            top: 10px;
+            transform: rotate(120deg);
+        }
+
+        .leaf:nth-child(3) {
+            left: 40px;
+            top: 20px;
+            transform: rotate(200deg);
+        }
+
+        .window {
+            position: absolute;
+            width: 180px;
+            height: 220px;
+            background-color: #90e0ef;
+            border: 15px solid #fff;
+            border-radius: 10px;
+            top: 15%;
+            right: 15%;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            z-index: 3;
+        }
+
+        .window::before {
+            content: '';
+            position: absolute;
+            width: 5px;
+            height: 100%;
+            background-color: #fff;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .window::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            background-color: #fff;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .door {
+            position: absolute;
+            width: 120px;
+            height: 250px;
+            background-color: #ffd6a5;
+            border: 8px solid #ffbd59;
+            border-radius: 10px 10px 0 0;
+            bottom: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+
+        .door-knob {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #ffbd59;
+            border-radius: 50%;
+            top: 50%;
+            right: 15px;
+        }
+
+        /* Birthday dress */
+        .dress-display {
+            position: absolute;
+            top: 20%;
+            left: 15%;
+            width: 150px;
+            height: 200px;
+            background-color: #ffb3ba;
+            border-radius: 50% 50% 0 0;
+            z-index: 4;
+            border: 5px solid #ff6b6b;
+            display: none;
+        }
+
+        .dress-straps {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 20px;
+        }
+
+        .dress-strap {
+            position: absolute;
+            width: 5px;
+            height: 30px;
+            background-color: #ff6b6b;
+            transform-origin: top center;
+        }
+
+        .dress-strap:first-child {
+            left: 20px;
+            transform: rotate(-15deg);
+        }
+
+        .dress-strap:last-child {
+            right: 20px;
+            transform: rotate(15deg);
+        }
+
+        .dress-bow {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 20px;
+        }
+
+        .dress-bow::before,
+        .dress-bow::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 15px;
+            background-color: #ff6b6b;
+            border-radius: 50%;
+        }
+
+        .dress-bow::before {
+            left: -10px;
+        }
+
+        .dress-bow::after {
+            right: -10px;
+        }
+
+        /* Game UI */
+        .game-ui {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .dialogue-box {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto 20px;
+            position: relative;
+            display: none;
+        }
+
+        .dialogue-content {
+            font-size: 18px;
+            line-height: 1.5;
+        }
+
+        .speaker-name {
+            font-weight: bold;
+            color: var(--button-color);
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin-top: 15px;
+            display: none;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .option-button {
+            width: 100%;
+            padding: 15px 20px;
+            background-color: #fff;
+            color: var(--text-color);
+            border: 2px solid var(--button-color);
+            border-radius: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .option-button:hover {
+            background-color: var(--button-color);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .option-icon {
+            font-size: 24px;
+            margin-left: 10px;
+        }
+
+        .option-text {
+            text-align: left;
+            flex-grow: 1;
+            margin-left: 10px;
+        }
+
+        .surprise-input {
+            width: 100%;
+            display: none;
+            margin-top: 20px;
+        }
+
+        .surprise-input input {
+            width: 80%;
+            padding: 15px;
+            border: 2px solid var(--button-color);
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .surprise-input button {
+            padding: 15px 25px;
+            background-color: var(--button-color);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .surprise-input button:hover {
+            background-color: var(--button-hover);
+            transform: translateY(-3px);
+        }
+
+        /* Characters */
+        .character {
+            position: absolute;
+            bottom: 30%;
+            width: 180px;
+            height: 380px;
+            z-index: 5;
+            transition: transform 1s ease, left 1s ease;
+        }
+
+        .ronita {
+            left: -200px; /* Start off-screen */
+            transform-origin: bottom center;
+        }
+
+        .tanisha {
+            right: 15%;
+            transform-origin: bottom center;
+        }
+
+        .character-body {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Ronita avatar styling */
+        .ronita .head {
+            position: absolute;
+            width: 100px;
+            height: 120px;
+            background-color: #ffe0bd;
+            border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .ronita .hair {
+            position: absolute;
+            width: 130px;
+            height: 140px;
+            background-color: #8d5524;
+            border-radius: 60% 60% 50% 50% / 70% 70% 40% 40%;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .ronita .hair::before,
+        .ronita .hair::after {
+            content: '';
+            position: absolute;
+            background-color: #8d5524;
+            border-radius: 50%;
+        }
+
+        .ronita .hair::before {
+            width: 50px;
+            height: 80px;
+            left: -15px;
+            top: 40px;
+            transform: rotate(-10deg);
+        }
+
+        .ronita .hair::after {
+            width: 50px;
+            height: 80px;
+            right: -15px;
+            top: 40px;
+            transform: rotate(10deg);
+        }
+
+        .ronita .eyes {
+            position: absolute;
+            width: 80px;
+            height: 20px;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-between;
+            z-index: 3;
+        }
+
+        .ronita .eye {
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .ronita .eye::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #5d4037;
+            border-radius: 50%;
+            top: 5px;
+            left: 5px;
+        }
+
+        .ronita .eyebrows {
+            position: absolute;
+            width: 80px;
+            height: 8px;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-between;
+            z-index: 3;
+        }
+
+        .ronita .eyebrow {
+            width: 25px;
+            height: 5px;
+            background-color: #8d5524;
+            border-radius: 5px;
+        }
+
+        .ronita .mouth {
+            position: absolute;
+            width: 30px;
+            height: 10px;
+            background-color: transparent;
+            border-bottom: 3px solid #d32f2f;
+            border-radius: 0 0 10px 10px;
+            top: 95px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+
+        .ronita .torso {
+            position: absolute;
+            width: 120px;
+            height: 130px;
+            background-color: white;
+            border-radius: 30% 30% 0 0 / 20% 20% 0 0;
+            top: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .ronita .pants {
+            position: absolute;
+            width: 140px;
+            height: 170px;
+            background-color: #90caf9;
+            border-radius: 10px 10px 0 0;
+            top: 270px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .ronita .leg {
+            position: absolute;
+            width: 35px;
+            height: 50px;
+            background-color: #ffe0bd;
+            bottom: 0;
+            z-index: 0;
+        }
+
+        .ronita .left-leg {
+            left: 35px;
+        }
+
+        .ronita .right-leg {
+            right: 35px;
+        }
+
+        .ronita .shoe {
+            position: absolute;
+            width: 50px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        .ronita .left-shoe {
+            left: 25px;
+        }
+
+        .ronita .right-shoe {
+            right: 25px;
+        }
+
+        .ronita .arms {
+            position: absolute;
+            width: 150px;
+            height: 30px;
+            top: 180px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-between;
+            z-index: 0;
+        }
+
+        .ronita .arm {
+            width: 30px;
+            height: 100px;
+            background-color: #ffe0bd;
+            border-radius: 10px;
+        }
+
+        .ronita .hand {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: #ffe0bd;
+            border-radius: 50%;
+            bottom: -20px;
+        }
+
+        .ronita .left-arm .hand {
+            left: 0;
+        }
+
+        .ronita .right-arm .hand {
+            right: 0;
+        }
+
+        .ronita .purse {
+            position: absolute;
+            width: 40px;
+            height: 50px;
+            background-color: #424242;
+            border-radius: 5px;
+            top: 220px;
+            left: 0;
+            z-index: 3;
+        }
+
+        /* Tanisha avatar styling */
+        .tanisha .head {
+            position: absolute;
+            width: 100px;
+            height: 120px;
+            background-color: #ffe0bd;
+            border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .tanisha .crown {
+            position: absolute;
+            width: 80px;
+            height: 40px;
+            background-color: #ffd700;
+            border-radius: 5px 5px 0 0;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            overflow: hidden;
+        }
+
+        .tanisha .crown::before {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 20px;
+            background-color: #ffd700;
+            top: -10px;
+            left: 10px;
+            border-radius: 0 0 5px 5px;
+            transform: rotate(30deg);
+        }
+
+        .tanisha .crown::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 20px;
+            background-color: #ffd700;
+            top: -10px;
+            right: 10px;
+            border-radius: 0 0 5px 5px;
+            transform: rotate(-30deg);
+        }
+
+        .tanisha .crown-point {
+            position: absolute;
+            width: 15px;
+            height: 25px;
+            background-color: #ffd700;
+            top: -15px;
+            border-radius: 0 0 5px 5px;
+        }
+
+        .tanisha .crown-point:nth-child(1) {
+            left: 10px;
+        }
+
+        .tanisha .crown-point:nth-child(2) {
+            left: 50%;
+            transform: translateX(-50%);
+            height: 30px;
+            top: -20px;
+        }
+
+        .tanisha .crown-point:nth-child(3) {
+            right: 10px;
+        }
+
+        .tanisha .crown-jewel {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background-color: #e91e63;
+            border-radius: 50%;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .tanisha .hair {
+            position: absolute;
+            width: 130px;
+            height: 160px;
+            background: linear-gradient(to bottom, #8d5524 0%, #ffd700 100%);
+            border-radius: 60% 60% 50% 50% / 70% 70% 30% 30%;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .tanisha .eyes {
+            position: absolute;
+            width: 80px;
+            height: 20px;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-between;
+            z-index: 3;
+        }
+
+        .tanisha .eye {
+            width: 20px;
+            height: 20px;
+            background-color: white;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .tanisha .eye::after {
+            content: '';
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #5d4037;
+            border-radius: 50%;
+            top: 5px;
+            left: 5px;
+        }
+
+        .tanisha .eyebrows {
+            position: absolute;
+            width: 80px;
+            height: 8px;
+            top: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-between;
+            z-index: 3;
+        }
+
+        .tanisha .eyebrow {
+            width: 25px;
+            height: 5px;
+            background-color: #8d5524;
+            border-radius: 5px;
+        }
+
+        .tanisha .mouth {
+            position: absolute;
+            width: 30px;
+            height: 10px;
+            background-color: transparent;
+            border-bottom: 3px solid #d32f2f;
+            border-radius: 0 0 10px 10px;
+            top: 95px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+        }
+
+        .tanisha .dress {
+            position: absolute;
+            width: 120px;
+            height: 180px;
+            background-color: #f44336;
+            border-radius: 30% 30% 0 0 / 20% 20% 0 0;
+            top: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+
+        .tanisha .belt {
+            position: absolute;
+            width: 120px;
+            height: 15px;
+            background-color: #ffd700;
+            top: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .tanisha .belt-buckle {
+            position: absolute;
+            width: 20px;
+            height: 10px;
+            background-color: #ffeb3b;
+            top: 2px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .tanisha .legs {
+            position: absolute;
+            width: 120px;
+            height: 60px;
+            top: 320px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-around;
+            z-index: 1;
+        }
+
+        .tanisha .leg {
+            width: 30px;
+            height: 60px;
+            background-color: #ffe0bd;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .tanisha .shoes {
+            position: absolute;
+            width: 120px;
+            height: 20px;
+            top: 380px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-around;
+            z-index: 1;
+        }
+
+        .tanisha .shoe {
+            width: 40px;
+            height: 20px;
+            background-color: black;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .tanisha .arms {
+            position: absolute;
+            width: 150px;
+            height: 30px;
+            top: 180px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: space-between;
+            z-index: 0;
+        }
+
+        .tanisha .arm {
+            width: 30px;
+            height: 100px;
+            background-color: #ffe0bd;
+            border-radius: 10px;
+        }
+
+        .tanisha .hand {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: #ffe0bd;
+            border-radius: 50%;
+            bottom: -20px;
+        }
+
+        .tanisha .left-arm .hand {
+            left: 0;
+        }
+
+        .tanisha .right-arm .hand {
+            right: 0;
+        }
+
+        /* Animation effects */
+        @keyframes blink {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.1); }
+        }
+
+        .eye {
+            animation: blink 3s infinite;
+        }
+
+        .talking .mouth {
+            animation: talk 0.3s infinite alternate;
+        }
+
+        @keyframes talk {
+            from { height: 5px; }
+            to { height: 15px; border-radius: 5px; }
+        }
+
+        .wave .right-arm {
+            animation: wave 1s infinite;
+            transform-origin: top center;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(20deg); }
+        }
+
+        .bounce {
+            animation: bounce 0.5s;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Reactions */
+        .reaction {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 20;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Shopping reaction */
+        .shopping-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .shopping-cart {
+            width: 120px;
+            height: 80px;
+            position: relative;
+            margin-bottom: 30px;
+            animation: cartMove 3s forwards;
+        }
+
+        .cart-base {
+            width: 120px;
+            height: 40px;
+            background-color: #5c6bc0;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 0;
+        }
+
+        .cart-handle {
+            width: 60px;
+            height: 50px;
+            border: 5px solid #5c6bc0;
+            border-bottom: none;
+            border-radius: 30px 30px 0 0;
+            position: absolute;
+            top: -10px;
+            left: -30px;
+        }
+
+        .cart-wheel {
+            width: 15px;
+            height: 15px;
+            background-color: #37474f;
+            border-radius: 50%;
+            position: absolute;
+            bottom: -7px;
+        }
+
+        .wheel-1 {
+            left: 20px;
+        }
+
+        .wheel-2 {
+            right: 20px;
+        }
+
+        .shopping-badge {
+            width: 200px;
+            height: 80px;
+            background-color: #ff9eaf;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: scale(0.5);
+            animation: badgeAppear 0.5s forwards;
+            animation-delay: 2s;
+        }
+
+        @keyframes cartMove {
+            0% { transform: translateX(-200px) scale(0.5); }
+            50% { transform: translateX(200px) scale(1.5); }
+            100% { transform: translateX(0) scale(1); }
+        }
+
+        @keyframes badgeAppear {
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Spa/Nails reaction */
+        .spa-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .spa-robe {
+            width: 150px;
+            height: 180px;
+            background-color: #b2ebf2;
+            border-radius: 10px 10px 80px 80px;
+            position: relative;
+            margin-bottom: 30px;
+            transform: scale(0);
+            animation: robeAppear 1s forwards;
+        }
+
+        .spa-belt {
+            width: 30px;
+            height: 20px;
+            background-color: #80deea;
+            position: absolute;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .spa-badge {
+            width: 200px;
+            height: 80px;
+            background-color: #4dd0e1;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            animation: badgeAppear 0.5s forwards;
+            animation-delay: 1.5s;
+        }
+
+        @keyframes robeAppear {
+            0% { transform: scale(0) rotate(-20deg); }
+            60% { transform: scale(1.2) rotate(10deg); }
+            100% { transform: scale(1) rotate(0); }
+        }
+
+        /* Coffee reaction */
+        .cafe-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .giant-coffee {
+            width: 150px;
+            height: 200px;
+            position: relative;
+            margin-bottom: 30px;
+            transform: translateY(200px);
+            animation: coffeeRise 1.5s forwards;
+        }
+
+        .coffee-cup {
+            width: 150px;
+            height: 180px;
+            background-color: #ffffff;
+            border: 8px solid #795548;
+            border-radius: 20px 20px 70px 70px / 20px 20px 40px 40px;
+            position: absolute;
+            bottom: 0;
+        }
+
+        .coffee-logo {
+            width: 80px;
+            height: 80px;
+            background-color: #8d6e63;
+            border-radius: 50%;
+            position: absolute;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .coffee-liquid {
+            width: 135px;
+            height: 60px;
+            background-color: #795548;
+            border-radius: 0 0 65px 65px / 0 0 35px 35px;
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .coffee-handle {
+            width: 40px;
+            height: 80px;
+            border: 8px solid #795548;
+            border-left: none;
+            border-radius: 0 40px 40px 0;
+            position: absolute;
+            top: 40px;
+            right: -20px;
+        }
+
+        .coffee-badge {
+            width: 200px;
+            height: 80px;
+            background-color: #a1887f;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            animation: badgeAppear 0.5s forwards;
+            animation-delay: 2s;
+        }
+
+        @keyframes coffeeRise {
+            to { transform: translateY(0); }
+        }
+
+        /* Surprise reaction */
+        .surprise-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .surprise-box {
+            width: 150px;
+            height: 150px;
+            background-color: #ff4081;
+            border: 8px solid #f50057;
+            border-radius: 20px;
+            position: relative;
+            margin-bottom: 30px;
+            animation: boxShake 0.5s infinite alternate;
+        }
+
+        .surprise-lid {
+            width: 170px;
+            height: 40px;
+            background-color: #ff4081;
+            border: 8px solid #f50057;
+            border-radius: 15px;
+            position: absolute;
+            top: -30px;
+            left: -18px;
+            z-index: 1;
+            transform-origin: bottom center;
+        }
+
+        .surprise-bow {
+            width: 60px;
+            height: 30px;
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .surprise-bow::before,
+        .surprise-bow::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 20px;
+            background-color: #f50057;
+            border-radius: 40% 40% 0 40%;
+        }
+
+        .surprise-bow::before {
+            transform: rotate(-45deg);
+            left: -10px;
+        }
+
+        .surprise-bow::after {
+            transform: rotate(45deg);
+            right: -10px;
+        }
+
+        .surprise-badge {
+            width: 220px;
+            height: 80px;
+            background-color: #ff80ab;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            animation: badgeAppear 0.5s forwards;
+            animation-delay: 2.5s;
+            text-align: center;
+            padding: 10px;
+        }
+
+        @keyframes boxShake {
+            0% { transform: rotate(-5deg); }
+            100% { transform: rotate(5deg); }
+        }
+
+        .nextBtn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 15px;
+            display: block;
+            margin-left: auto;
+            transition: all 0.3s;
+        }
+
+        .nextBtn:hover {
+            background-color: #05b589;
+            transform: translateY(-2px);
+        }
+
+        .start-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 15px 30px;
+            background-color: var(--button-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .start-btn:hover {
+            background-color: var(--button-hover);
+            transform: translate(-50%, -55%);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Media queries for responsiveness */
+        @media (max-width: 768px) {
+            .character {
+                transform: scale(0.7);
+            }
+            
+            .ronita {
+                left: -100px;
+            }
+            
+            .dialogue-box {
+                width: 90%;
+                padding: 15px;
+            }
+            
+            .option-button {
+                font-size: 16px;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- House interior -->
+        <div class="house-interior">
+            <div class="wall"></div>
+            <div class="floor"></div>
+            
+            <div class="furniture window"></div>
+            <div class="furniture door">
+                <div class="door-knob"></div>
+            </div>
+            <div class="furniture sofa"></div>
+            <div class="furniture table"></div>
+            <div class="furniture plant">
+                <div class="plant-pot"></div>
+                <div class="plant-leaves">
+                    <div class="leaf"></div>
+                    <div class="leaf"></div>
+                    <div class="leaf"></div>
+                </div>
+            </div>
+            
+            <!-- Birthday dress display -->
+            <div class="dress-display" id="dressDisplay">
+                <div class="dress-straps">
+                    <div class="dress-strap"></div>
+                    <div class="dress-strap"></div>
+                </div>
+                <div class="dress-bow"></div>
+            </div>
+        </div>
+        
+        <!-- Characters -->
+        <div class="character ronita">
+            <div class="character-body">
+                <div class="head"></div>
+                <div class="hair"></div>
+                <div class="eyes">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+                <div class="eyebrows">
+                    <div class="eyebrow"></div>
+                    <div class="eyebrow"></div>
+                </div>
+                <div class="mouth"></div>
+                <div class="torso"></div>
+                <div class="pants"></div>
+                <div class="arms">
+                    <div class="arm left-arm">
+                        <div class="hand"></div>
+                    </div>
+                    <div class="arm right-arm">
+                        <div class="hand"></div>
+                    </div>
+                </div>
+                <div class="purse"></div>
+                <div class="legs">
+                    <div class="leg left-leg"></div>
+                    <div class="leg right-leg"></div>
+                </div>
+                <div class="shoes">
+                    <div class="shoe left-shoe"></div>
+                    <div class="shoe right-shoe"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="character tanisha">
+            <div class="character-body">
+                <div class="head"></div>
+                <div class="crown">
+                    <div class="crown-point"></div>
+                    <div class="crown-point"></div>
+                    <div class="crown-point"></div>
+                    <div class="crown-jewel"></div>
+                </div>
+                <div class="hair"></div>
+                <div class="eyes">
+                    <div class="eye"></div>
+                    <div class="eye"></div>
+                </div>
+                <div class="eyebrows">
+                    <div class="eyebrow"></div>
+                    <div class="eyebrow"></div>
+                </div>
+                <div class="mouth"></div>
+                <div class="dress"></div>
+                <div class="belt">
+                    <div class="belt-buckle"></div>
+                </div>
+                <div class="legs">
+                    <div class="leg left-leg"></div>
+                    <div class="leg right-leg"></div>
+                </div>
+                <div class="shoes">
+                    <div class="shoe left-shoe"></div>
+                    <div class="shoe right-shoe"></div>
+                </div>
+                <div class="arms">
+                    <div class="arm left-arm">
+                        <div class="hand"></div>
+                    </div>
+                    <div class="arm right-arm">
+                        <div class="hand"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Game UI -->
+        <div class="game-ui">
+            <div class="dialogue-box" id="dialogueBox">
+                <div class="speaker-name" id="speakerName"></div>
+                <div class="dialogue-content" id="dialogueContent"></div>
+                <button class="nextBtn" id="nextBtn">Next →</button>
+            </div>
+            <div class="options-container" id="optionsContainer">
+                <button class="option-button" id="shoppingBtn">
+                    <span class="option-icon">🛍️</span>
+                    <span class="option-text">Shopping Spree – "Let's hit the stores, and you're paying!"</span>
+                </button>
+                <button class="option-button" id="spaBtn">
+                    <span class="option-icon">💅</span>
+                    <span class="option-text">Girls' Day Out – "Nails, spa, and gossip—only if you buy me coffee after!"</span>
+                </button>
+                <button class="option-button" id="coffeeBtn">
+                    <span class="option-icon">☕</span>
+                    <span class="option-text">Tea/Coffee Date – "Let's talk it out like classy ladies over coffee."</span>
+                </button>
+                <button class="option-button" id="surpriseBtn">
+                    <span class="option-icon">🎁</span>
+                    <span class="option-text">Surprise Me – I have something else in mind...</span>
+                </button>
+            </div>
+            <div class="surprise-input" id="surpriseInput">
+                <input type="text" id="customSurprise" placeholder="Tell Ronita how she can make it up to you...">
+                <button id="submitSurpriseBtn">Lock in My Surprise!</button>
+            </div>
+        </div>
+        
+        <!-- Reaction animations -->
+        <div class="reaction" id="shoppingReaction">
+            <div class="shopping-container">
+                <div class="shopping-cart">
+                    <div class="cart-base"></div>
+                    <div class="cart-handle"></div>
+                    <div class="cart-wheel wheel-1"></div>
+                    <div class="cart-wheel wheel-2"></div>
+                </div>
+                <div class="shopping-badge">Best Shopping Buddy</div>
+            </div>
+        </div>
+        
+        <div class="reaction" id="spaReaction">
+            <div class="spa-container">
+                <div class="spa-robe">
+                    <div class="spa-belt"></div>
+                </div>
+                <div class="spa-badge">Relaxation Unlocked</div>
+            </div>
+        </div>
+        
+        <div class="reaction" id="coffeeReaction">
+            <div class="cafe-container">
+                <div class="giant-coffee">
+                    <div class="coffee-cup"></div>
+                    <div class="coffee-logo">BESTIE BREW</div>
+                    <div class="coffee-liquid"></div>
+                    <div class="coffee-handle"></div>
+                </div>
+                <div class="coffee-badge">BFFs Forever</div>
+            </div>
+        </div>
+        
+        <div class="reaction" id="surpriseReaction">
+            <div class="surprise-container">
+                <div class="surprise-box">
+                    <div class="surprise-lid"></div>
+                    <div class="surprise-bow"></div>
+                </div>
+                <div class="surprise-badge" id="surpriseBadge">Your custom surprise is locked in!</div>
+            </div>
+        </div>
+        
+        <!-- Start button -->
+        <button class="start-btn" id="startBtn">Start Game</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get DOM elements
+            const dialogueBox = document.getElementById('dialogueBox');
+            const speakerName = document.getElementById('speakerName');
+            const dialogueContent = document.getElementById('dialogueContent');
+            const optionsContainer = document.getElementById('optionsContainer');
+            const surpriseInput = document.getElementById('surpriseInput');
+            const customSurprise = document.getElementById('customSurprise');
+            const submitSurpriseBtn = document.getElementById('submitSurpriseBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const startBtn = document.getElementById('startBtn');
+            const shoppingBtn = document.getElementById('shoppingBtn');
+            const spaBtn = document.getElementById('spaBtn');
+            const coffeeBtn = document.getElementById('coffeeBtn');
+            const surpriseBtn = document.getElementById('surpriseBtn');
+            const shoppingReaction = document.getElementById('shoppingReaction');
+            const spaReaction = document.getElementById('spaReaction');
+            const coffeeReaction = document.getElementById('coffeeReaction');
+            const surpriseReaction = document.getElementById('surpriseReaction');
+            const surpriseBadge = document.getElementById('surpriseBadge');
+            const ronitaCharacter = document.querySelector('.ronita');
+            const tanishaCharacter = document.querySelector('.tanisha');
+            const dressDisplay = document.getElementById('dressDisplay');
+            
+            // Sound effects
+            const clickSound = new Audio('data:audio/wav;base64,UklGRiQEAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQAEAACBhYqFbF1fdJSirJBwVUpfdo2bk3piU1Rmf5OVhGhVRUxca4qeqJt+YUtDb4uskXFWPUFYc4iOgm9cSmBwgox6Z1pYaXaBgHdsYl1kcHptX1pZY3N8gIB1ZVtZY3aLlpODbl1OSlVqiKGqoIhoVUlHVGh5iJuloZBoVD89Sl5ygZSZkoR2ZE9AR2BziZeemYt4ZENDWXSWp6GPdFxFPUlihKKonIVtWUU7Qld1kaeomX9kSz5EVnOTqKaKb1hKQktjgZSWjX1vXUtHWXKMnZyLdWJTT1Zsg5WYjnpnVElTa4qenZB6ZlRESV9/nrCnkXdeUUVNX3yUoJ2NemhZTU5fdYuWlId5aVdNWHGLmpeLemhXS05ee5Sdl4l2ZVRMVnWQop+JcF1RSFNvlKqqk3JdUU1TZn6Vm5KBcF9QTl14kJiXi3ZoW1Jac4qZmIlxYlZQWnSKlpMOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD8/v8AAwcJAAIFBgD//wAAAQMEAAECAwD/AQIA/wABAAAAAAD/AAAA//8AAP7/AAD9/v8A/v7/AP3+/wD8/f4A/P3+APv9/QD8/f4A/f7+AP7+/wD+/v8A/v7/AP///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQEAAgICAAMDAwADAwMAAwMDAAICAQABAQEAAAAAAAAAAAD/////////////////////+/z9APf5+gD3+foA+vv8APz9/gD9/v4A/v7/AP///wAAAAAAAQABAAEAAQABAQEAAQEBAAEBAQABAQEAAQEBAAAAAAAAAAAAAAAAAP7+/wD9/f4A/f3+AP39/gD9/v4A/f7+AP7+/gD+/v8A/v7/AP7+/wD///8A////AP///wD///8A////AP///wD///8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD+//8A/v//AP7//wD+//8A/v//AP7//wD+//8A/v//AP7//wD+//8A/v//AP///wD///8A////AP///wD///8A////AP///wD///8A');
+            const reactionSound = new Audio('data:audio/wav;base64,UklGRvQDAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YdADAACAgICAgICAgICAgICAgICAgICAgICAAFe9ACqfAB6WACiYAECgAF2uAHO1AJTIALDZAMraAO3pAPbzAPb4APL7AOr8AN8EAOUKAO0OAPITAOIfAM8tALM6AJxIAIBWAGNiAEdlACRnAAtrAPtuAOtxAOB0AM94AMJ7ALF+AJuAA3GCDVCDHDSDKiyEOByFSgyGWQKHZv+Icv2JgPuKjvmLnPiMq/aOwvWP2fOR8PKS//CTEe6UIOiVMOOWQN6XUN2Yb9+awOWdGe2gd/Sj2/inOwWrcQ6utA6wvgyyzQi04wO2+AG4FP65Mv27VP7AeP/Ekv/HqwDK3gDNBwHQLAHSSgHTZQHVdgHXhAHZkgHboQHdrwHfwQHh0wHj4QHl8QHn/gLqCALsEQLuGQLwIgLyKwL0NQL2PgL4RAP6SgP8UAP+VQQAWgQCXgQEYgQGZAUIZwUKaQUMbAUObgUQcAUSbwUUbwUWbgUYbgUabQUcbAUeawUgagUiaQUkZgUmZQUoYwUqYQUsXwUuXQUwWwUyWQU0VwU2VQU4UgU6UQU8UAU+TwVASQVCRwVERQVGQwVIQQVKPwVMPQVOOwVQOAVSNgVUMwVWMAVYLgVaKgVcJwVeJAVgIQViHgVkGwVmFwVoEwVqDgVsCAVuAwVw/QRy9wR08gR27QR45gR64QR83gR+2QSA1QSC0ASEzQSFyQSHxgSJwwSLwASMvQSOugSPuASRtQSTsQSUrQSWqgSYpgSZogSbngSdmgSfmASglQSimQSkngSmpgSosgSqwASsywSu2wSw5gSy8QS0+wS3BAW5DQW7FgW9HgW/JgXBMQXDOQXFQQXHSAXJUQXLVwXNXQXPYgXRZQXTaQXVbAXXbQXZbQXbbQXdbAXfawXhagXjaAXlZwXnZQXpYgXrYQXtXgXvXAXxWgXzWAX1VgX3UwX5UQX7TgX9TAX/SgYBSAYDRgYFQwYHQQYJPgYLPAYNOQYPNwYRNQYTMwYVMQYXLgYZKwYbKQYdJwYfJAYhIgYjIAYlHgYnGwYpGQYrGAYtFgYvFQYxFAYzEgY1EQY3EAY5DwY7DgY9DAY/CwZBCQZDCAZFBwZHBgZJBQZLAwZNAwZPAgZRAgZTAQZVAQZXAAZY/wZa/wZc/gZe/gZg/AZi+wZk+QZm+QZo9wZq9wZs9QZu9AZw8gZy8QZ08AZ28AZ47wZ67gZ87QZ+7AaA7AaC6waE6gaG6QaI5waK5gaM5AaO5AaQ4waS4gaU4QaW4AaY3gaZ3gab3Qad3Aaf2wah2gaj2Qal2Aan1wap1gap1Qas1Aau1Aaw0wWy0wW00gay0ga00Aa20Aa30Aa50Ae7zwe8zge+zQfAzAfCywfEyQfFyAfHxgfJxAfKwwfMwQfOvwfQvQfSugfUtgfWtAfYsgfasAfdrgffqgfhpwfjpQfmowfoogfroAftnwfwnQfynAf0mwf3mAf5lgf8kwf+jweAhAeBgAeCfQeEdQeFbweFageGZAeHXgeFVweHTAeFRwb/AAD///////////////////////////////////////////////8=');
+
+            // Game state
+            let currentStep = 0;
+            let canProceed = true;
+            let customSurpriseText = '';
+            
+            // Game dialogue
+            const dialogue = [
+                { speaker: "", content: "At Tanisha's birthday party, Ronita gave her a dress that didn't quite hit the mark...", showOptions: false },
+                { speaker: "", content: "A few days later, Ronita visits Tanisha's house to make things right...", showOptions: false },
+                { speaker: "", content: "*knock knock*", showOptions: false },
+                { speaker: "Tanisha", content: "Who is it?", showOptions: false },
+                { speaker: "Ronita", content: "It's me, Ronita. Can I come in?", showOptions: false },
+                { speaker: "Tanisha", content: "Oh... sure, come in.", showOptions: false },
+                { speaker: "Ronita", content: "Hey Tanisha! I've been thinking about your birthday gift...", showOptions: false },
+                { speaker: "Ronita", content: "I can tell you didn't like the dress I got you. I should have paid more attention to your style.", showOptions: false },
+                { speaker: "Tanisha", content: "Yeah... it wasn't really my style. I appreciate the thought though.", showOptions: false },
+                { speaker: "Ronita", content: "I feel terrible! I want to make it up to you. What can I do to fix this?", showOptions: false },
+                { speaker: "Tanisha", content: "Well...", showOptions: true }
+            ];
+            
+            // Character movement functions
+            function moveRonitaIn() {
+                ronitaCharacter.style.left = '25%';
+            }
+            
+            function showDress() {
+                setTimeout(() => {
+                    dressDisplay.style.display = 'block';
+                }, 5000);
+            }
+            
+            function animateTalking(character) {
+                const allCharacters = document.querySelectorAll('.character');
+                allCharacters.forEach(char => {
+                    char.classList.remove('talking');
+                });
+                
+                if (character === "Ronita") {
+                    ronitaCharacter.classList.add('talking');
+                } else if (character === "Tanisha") {
+                    tanishaCharacter.classList.add('talking');
+                }
+            }
+            
+            // Show dialogue
+            function showDialogue(step) {
+                if (step >= dialogue.length) return;
+                
+                const currentDialogue = dialogue[step];
+                speakerName.textContent = currentDialogue.speaker;
+                dialogueContent.textContent = currentDialogue.content;
+                dialogueBox.style.display = 'block';
+                
+                // Animate talking
+                animateTalking(currentDialogue.speaker);
+                
+                // Show or hide options
+                if (currentDialogue.showOptions) {
+                    nextBtn.style.display = 'none';
+                    optionsContainer.style.display = 'flex';
+                } else {
+                    nextBtn.style.display = 'block';
+                    optionsContainer.style.display = 'none';
+                }
+            }
+            
+            // Save surprise to local storage
+            function saveSurprise(surprise) {
+                localStorage.setItem('tanishaSurprise', surprise);
+                console.log('Saved surprise:', surprise);
+            }
+            
+            // Event listeners
+            startBtn.addEventListener('click', function() {
+                clickSound.play();
+                startBtn.classList.add('hidden');
+                moveRonitaIn();
+                showDress();
+                showDialogue(currentStep);
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                clickSound.play();
+                if (!canProceed) return;
+                
+                currentStep++;
+                showDialogue(currentStep);
+            });
+            
+            shoppingBtn.addEventListener('click', function() {
+                clickSound.play();
+                
+                // Hide dialogue and options
+                dialogueBox.style.display = 'none';
+                optionsContainer.style.display = 'none';
+                
+                // Show shopping animation
+                setTimeout(() => {
+                    reactionSound.play();
+                    shoppingReaction.style.display = 'flex';
+                }, 300);
+                
+                // Set timeout to show final dialogue
+                setTimeout(() => {
+                    shoppingReaction.style.display = 'none';
+                    speakerName.textContent = "Tanisha";
+                    dialogueContent.textContent = "Yes! Shopping spree it is! My credit card is already feeling lighter just thinking about it!";
+                    dialogueBox.style.display = 'block';
+                    nextBtn.style.display = 'block';
+                    tanishaCharacter.classList.add('talking');
+                }, 5000);
+            });
+            
+            spaBtn.addEventListener('click', function() {
+                clickSound.play();
+                
+                // Hide dialogue and options
+                dialogueBox.style.display = 'none';
+                optionsContainer.style.display = 'none';
+                
+                // Show spa animation
+                setTimeout(() => {
+                    reactionSound.play();
+                    spaReaction.style.display = 'flex';
+                }, 300);
+                
+                // Set timeout to show final dialogue
+                setTimeout(() => {
+                    spaReaction.style.display = 'none';
+                    speakerName.textContent = "Tanisha";
+                    dialogueContent.textContent = "Perfect! A day of pampering is exactly what I need. And don't forget the coffee after!";
+                    dialogueBox.style.display = 'block';
+                    nextBtn.style.display = 'block';
+                    tanishaCharacter.classList.add('talking');
+                }, 5000);
+            });
+            
+            coffeeBtn.addEventListener('click', function() {
+                clickSound.play();
+                
+                // Hide dialogue and options
+                dialogueBox.style.display = 'none';
+                optionsContainer.style.display = 'none';
+                
+                // Show coffee animation
+                setTimeout(() => {
+                    reactionSound.play();
+                    coffeeReaction.style.display = 'flex';
+                }, 300);
+                
+                // Set timeout to show final dialogue
+                setTimeout(() => {
+                    coffeeReaction.style.display = 'none';
+                    speakerName.textContent = "Tanisha";
+                    dialogueContent.textContent = "That sounds lovely! Sometimes all we need is a good heart-to-heart over some coffee to solve our problems.";
+                    dialogueBox.style.display = 'block';
+                    nextBtn.style.display = 'block';
+                    tanishaCharacter.classList.add('talking');
+                }, 5000);
+            });
+            
+            surpriseBtn.addEventListener('click', function() {
+                clickSound.play();
+                
+                // Hide options, show input
+                optionsContainer.style.display = 'none';
+                surpriseInput.style.display = 'block';
+            });
+            
+            submitSurpriseBtn.addEventListener('click', function() {
+                clickSound.play();
+                
+                customSurpriseText = customSurprise.value.trim();
+                if (!customSurpriseText) {
+                    customSurpriseText = "Something special and mysterious!";
+                }
+                
+                // Save to local storage
+                saveSurprise(customSurpriseText);
+                
+                // Hide input
+                surpriseInput.style.display = 'none';
+                dialogueBox.style.display = 'none';
+                
+                // Show surprise animation
+                setTimeout(() => {
+                    reactionSound.play();
+                    surpriseReaction.style.display = 'flex';
+                    surpriseBadge.textContent = customSurpriseText;
+                }, 300);
+                
+                // Set timeout to show final dialogue
+                setTimeout(() => {
+                    surpriseReaction.style.display = 'none';
+                    speakerName.textContent = "Tanisha";
+                    dialogueContent.textContent = `I'd like ${customSurpriseText}! Now that's creative thinking!`;
+                    dialogueBox.style.display = 'block';
+                    nextBtn.style.display = 'block';
+                    tanishaCharacter.classList.add('talking');
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>
